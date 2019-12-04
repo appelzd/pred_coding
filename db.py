@@ -30,7 +30,6 @@ class Db:
     def save_similar_docids(self, search_uid, search_docids, similar_docs):
         
         sql_con = pyodbc.connect(Configuration.GetDbConnectionString())
-        tmp = topic.split('+')
                     
         cursor = sql_con.cursor()
      
@@ -52,25 +51,30 @@ class Db:
         sql_con = pyodbc.connect(Configuration.GetDbConnectionString())
         rtn = list()
 
+        # i forgot  that i was going to add how close it was to a topic
+        # the tuple here has that info, but the db doesn't have a column
         for i in similar_docs:
             cursor = sql_con.cursor()
             docid_string = 'select DocId from Document where TextPath like \'%'
-            docid_string += i
+            docid_string += i[0]
             docid_string += '\''
 
             print(docid_string)
             cursor.execute(docid_string)
 
             #this is a row, so we want the 1st col
-            rtn.append(cursor.fetchone()[0])
+            id = cursor.fetchone()
+            if id is not None:
+                rtn.append(id)    
+            
             cursor.close()
         sql_con.close()
 
-        return rtn
+        return list(x[0] for x in rtn)
 
     def strigify_docids(self, ids):
         docid_string = '(\')'
-        for i in docids:
+        for i in ids:
             docid_string += str(i)
             docid_string += ','
 

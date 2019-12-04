@@ -107,12 +107,12 @@ class pred_coding_poc:
         rtn = list()
 
         for testfile in datafiles:
-            topic_prediction = self.fit_new_doc(testfile, lda_model, dictionary)
+            topic_prediction = self.fit_new_doc(testfile[1], lda_model, dictionary)
             #print('Test file likely to be topic {}, probability = {:.4f}'.format(topic_prediction[0][0], topic_prediction[0][1]))
             
             #this can be configurable to anything to determin how close you want docs
             if float(topic_prediction[0][1]) > .8:
-                rtn.append((testfile , topic_prediction[0][1]))
+                rtn.append((testfile[0] , topic_prediction[0][1]))
 
         return rtn
 
@@ -121,7 +121,7 @@ class pred_coding_poc:
         db = dbrepo()
         blob_repo = blobs()
 
-        datafiles = list(blob_repo.GetBlobs(db.get_documentnames_by_docid(docids)))    
+        datafiles = list([x[1] for x in blob_repo.GetBlobs(db.get_documentnames_by_docid(docids))])    
         
         lda_model, dictionary = self.identify_topics(datafiles, num_topics=2, no_above=.85, no_below=3)
         
