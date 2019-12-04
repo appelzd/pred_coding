@@ -98,7 +98,16 @@ class pred_coding_poc:
         bow_corpus = dictionary.doc2bow(lemmas) 
         topic_prediction = lda_model.get_document_topics(bow_corpus)
         return(topic_prediction)
-        
+
+    def process_all_docs(self, lda_model, dictionary):
+
+        datafiles = list(blob_repo.GetBlobs())
+
+        for testfile in datafiles:
+            topic_prediction = self.fit_new_doc(testfile, lda_model, dictionary)
+            print('Test file likely to be topic {}, probability = {:.4f}'.format(topic_prediction[0][0], topic_prediction[0][1]))
+   
+
 
     def process_docids_for_similarity(self, search_uid, docids):
 
@@ -109,15 +118,13 @@ class pred_coding_poc:
         
         lda_model, dictionary = self.identify_topics(datafiles, num_topics=4, no_above=.75, no_below=3)
         
-        
         for idx, topic in lda_model.print_topics(-1):
             print("Topic: {} Word: {}".format(idx, topic))
             print("\n")
+
+        self.process_all_docs(lda_model, dictionary)
         
-        for testfile in datafiles:
-            topic_prediction = self.fit_new_doc(testfile, lda_model, dictionary)
-            print('Test file likely to be topic {}, probability = {:.4f}'.format(topic_prediction[0][0], topic_prediction[0][1]))
-    
+        
     
 
 

@@ -8,9 +8,15 @@ class BlobRepo:
     def GetBlobs(self, doc_names):
         try:
             block_blob_service = BlockBlobService(account_name=Configuration.GetAzureBlobAccountName(), account_key=Configuration.GetAzureBlobKey())
-            blobs = block_blob_service.list_blobs(Configuration.GetBlobContainerName())
+            
+            blobs = []
+            if len(doc_names) > 0:
+                blobs = doc_names
+            else:
+                temp = block_blob_service.list_blobs(Configuration.GetBlobContainerName())
+                blobs = list([x.name for x in temp]) 
 
-            for b in doc_names:                
+            for b in blobs:                
                 try:
                     print(b)
                     bt = block_blob_service.get_blob_to_text(Configuration.GetBlobContainerName(), b)

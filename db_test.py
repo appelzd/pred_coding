@@ -12,8 +12,8 @@ class db_test_class(unittest.TestCase):
 
         self.assertTrue(len(results) == 4)
 
-    def test_save_similar_docids(self):
-        self.assertTrue(1)
+    # def test_save_similar_docids(self):
+    #     self.assertTrue(1)
 
 
 if __name__ == "__main__":
