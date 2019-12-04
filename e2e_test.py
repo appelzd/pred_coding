@@ -29,11 +29,11 @@ class E2ETests(unittest.TestCase):
         self.assertTrue(len(datafiles) > 0 )
 
 
-    # def test_process_docids_for_similarity(self):
-    #     prc = pred_coding_poc()
-    #     results = prc.process_docids_for_similarity('searchid', [1,2,3,4])
+    def test_process_docids_for_similarity(self):
+        prc = pred_coding_poc()
+        results = prc.process_docids_for_similarity('searchid', [1,2,3,4])
 
-    #     self.assertTrue(1 == 1)
+        self.assertTrue(1 == 1)
 
 if __name__ == "__main__":
     unittest.main()

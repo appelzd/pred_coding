@@ -100,8 +100,11 @@ class pred_coding_poc:
         return(topic_prediction)
 
     def process_all_docs(self, lda_model, dictionary):
+        
+        db = dbrepo()
+        blob_repo = blobs()
 
-        datafiles = list(blob_repo.GetBlobs())
+        datafiles = list(blob_repo.GetBlobs([]))
 
         for testfile in datafiles:
             topic_prediction = self.fit_new_doc(testfile, lda_model, dictionary)
