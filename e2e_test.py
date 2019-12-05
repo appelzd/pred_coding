@@ -7,26 +7,26 @@ from process_text import pred_coding_poc
 
 class E2ETests(unittest.TestCase):
 
-    # def test_getblob_withids_returns4(self):
+    def test_getblob_withids_returns4(self):
         
-    #     db = dbrepo()
-    #     blob_repo = blobs()
+        db = dbrepo()
+        blob_repo = blobs()
 
-    #     #this would actually be the docids passed in
-    #     docids_test = [1,2,3,4]
+        #this would actually be the docids passed in
+        docids_test = [1,2,3,4]
 
-    #     datafiles = list(blob_repo.GetBlobs(db.get_documentnames_by_docid(docids_test)))    
+        datafiles = list(blob_repo.GetBlobs(db.get_documentnames_by_docid(docids_test)))    
 
-    #     self.assertTrue(len(datafiles) == len(docids_test))
+        self.assertTrue(len(datafiles) == len(docids_test))
 
-    # def test_getblob_withnoids_returnssome(self):
+    def test_getblob_withnoids_returnssome(self):
         
-    #     db = dbrepo()
-    #     blob_repo = blobs()
+        db = dbrepo()
+        blob_repo = blobs()
 
-    #     datafiles = list(blob_repo.GetBlobs([]))    
+        datafiles = list(blob_repo.GetBlobs([]))    
 
-    #     self.assertTrue(len(datafiles) > 0 )
+        self.assertTrue(len(datafiles) > 0 )
 
     #running these test will speed up dev
     #this actually runs the entire script, as if it had been called from a web service

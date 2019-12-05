@@ -25,6 +25,7 @@ nltk.download('stopwords')
 nltk.download('averaged_perceptron_tagger')
 nltk.download('wordnet')
     
+# the majority of this file is  Scott's code
 class pred_coding_poc:
 
     def get_wordnet_pos(self, treebank_tag):
@@ -93,6 +94,7 @@ class pred_coding_poc:
                                                 passes = passes)
         return(lda_model_tfidf, dictionary)
         
+    # runs teh supplied doc against the models to see how well it fits with the supplied topics
     def fit_new_doc(self, docfile, lda_model, dictionary):
         lemmas = self.create_lemmas_from_file(docfile)
         bow_corpus = dictionary.doc2bow(lemmas) 
@@ -100,15 +102,17 @@ class pred_coding_poc:
         return(topic_prediction)
 
     def process_all_docs(self, lda_model, dictionary):
-        
+        # new up class
         blob_repo = blobs()
 
+        #get all docs in the blob storage
         datafiles = list(blob_repo.GetBlobs([]))
         rtn = list()
 
+        # check how the doc fits in the topics 
         for testfile in datafiles:
             topic_prediction = self.fit_new_doc(testfile[1], lda_model, dictionary)
-            #print('Test file likely to be topic {}, probability = {:.4f}'.format(topic_prediction[0][0], topic_prediction[0][1]))
+            print('Test file likely to be topic {}, probability = {:.4f}'.format(topic_prediction[0][0], topic_prediction[0][1]))
             
             #this can be configurable to anything to determin how close you want docs
             if float(topic_prediction[0][1]) > .8:
@@ -116,19 +120,23 @@ class pred_coding_poc:
 
         return rtn
 
+    # entry point for class
     def process_docids_for_similarity(self, search_uid, docids):
 
         db = dbrepo()
         blob_repo = blobs()
 
+        # get the blobs for the supplied docids
         datafiles = list([x[1] for x in blob_repo.GetBlobs(db.get_documentnames_by_docid(docids))])    
         
+        # get the top 2 topics for the docs pulled above
         lda_model, dictionary = self.identify_topics(datafiles, num_topics=2, no_above=.85, no_below=3)
         
         for idx, topic in lda_model.print_topics(-1):
             print("Topic: {} Word: {}".format(idx, topic))
             print("\n")
 
+        # get the similar docs and save to db
         similar_docs = self.process_all_docs(lda_model, dictionary)
         db.save_similar_docids(search_uid, docids, similar_docs)
         
