@@ -6,7 +6,7 @@ class Configuration:
     
     @staticmethod
     def GetDbConnectionString():
-        return 'DRIVER={ODBC Driver 17 for SQL Server};Server=tcp:csdev.database.windows.net,1433;Database=anvesacatlin;Trusted_Connection=no;UID=csadmin;Pwd=c$admin14500'
+        return 'DRIVER={ODBC Driver 17 for SQL Server};Server=tcp:csdev.database.windows.net,1433;Database=;Trusted_Connection=no;UID=;Pwd='
 
 
     @staticmethod
